@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+)
 
 func main() {
-	fmt.Printf("This is Go.")
+	http.ListenAndServe(":8080", ChiRouter().InitRouter())
 }
