@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/aswinda/notifyme/application/api/interfaces"
+	"github.com/aswinda/loket-backend-test/interfaces"
 	"github.com/go-chi/chi"
 )
 
