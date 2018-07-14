@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 	"sync"
 
 	"github.com/aswinda/loket-backend-test/controllers"
@@ -12,10 +11,11 @@ import (
 	"github.com/aswinda/loket-backend-test/repositories"
 	"github.com/aswinda/loket-backend-test/services"
 	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
 
 type IServiceContainer interface {
-	InjectUserController() controllers.UserController
+	InjectEventController() controllers.EventController
 }
 
 type kernel struct{}
@@ -25,17 +25,17 @@ var (
 	containerOnce sync.Once
 )
 
-func (k *kernel) InjectUserController() controllers.UserController {
+func (k *kernel) InjectEventController() controllers.EventController {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	mysqlUsername := os.Getenv("MYSQL_USERNAME")
-	mysqlPassword := os.Getenv("MYSQL_PASSWORD")
-	mysqlDefaultDb := os.Getenv("MYSQL_DEFAULT_DB")
-	mysqlHost := os.Getenv("MYSQL_HOST")
-	mysqlPort := os.Getenv("MYSQL_PORT")
+	mysqlUsername := viper.GetString(`database.user`)
+	mysqlPassword := viper.GetString(`database.pass`)
+	mysqlDefaultDb := viper.GetString(`database.name`)
+	mysqlHost := viper.GetString(`database.host`)
+	mysqlPort := viper.GetString(`database.port`)
 
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", mysqlUsername, mysqlPassword, mysqlHost, mysqlPort, mysqlDefaultDb)
 
@@ -47,11 +47,11 @@ func (k *kernel) InjectUserController() controllers.UserController {
 	mysqlHandler := &infrastructures.MysqlHandler{}
 	mysqlHandler.Conn = mysqlConn
 
-	userRepository := &repositories.UserRepository{mysqlHandler}
-	userService := &services.UserService{&repositories.UserRepositoryWithCircuitBreaker{userRepository}}
-	userController := controllers.UserController{userService}
+	eventRepository := &repositories.EventRepository{mysqlHandler}
+	eventService := &services.EventService{&repositories.EventRepositoryWithCircuitBreaker{eventRepository}}
+	eventController := controllers.EventController{eventService}
 
-	return userController
+	return eventController
 }
 
 func ServiceContainer() IServiceContainer {
