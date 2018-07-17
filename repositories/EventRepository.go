@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/afex/hystrix-go/hystrix"
-	"github.com/aswinda/notifyme/application/api/interfaces"
-	"github.com/aswinda/notifyme/application/api/models"
+	"github.com/aswinda/loket-backend-test/interfaces"
+	"github.com/aswinda/loket-backend-test/models"
 )
 
 type EventRepositoryWithCircuitBreaker struct {
@@ -16,11 +16,11 @@ type EventRepository struct {
 	interfaces.IDbHandler
 }
 
-func (repository *EventRepositoryWithCircuitBreaker) GetEventDetail(eventId int) (models.EventModel, error) {
+func (repository *EventRepositoryWithCircuitBreaker) EventDetail(eventId int) (models.EventModel, error) {
 	output := make(chan models.EventModel, 1)
 	hystrix.ConfigureCommand("get_event", hystrix.CommandConfig{Timeout: 1000})
 	errors := hystrix.Go("get_event", func() error {
-		event, _ := repository.EventRepository.GetEventDetail(eventId)
+		event, _ := repository.EventRepository.EventDetail(eventId)
 
 		output <- event
 		return nil
@@ -35,8 +35,9 @@ func (repository *EventRepositoryWithCircuitBreaker) GetEventDetail(eventId int)
 	}
 }
 
-func (repository *EventRepository) GetEventDetail(eventId int) (models.EventModel, error) {
-	row, err := repository.Query(fmt.Sprintf("SELECT * FROM events WHERE id = '%d'", eventId))
+func (repository *EventRepository) EventDetail(eventId int) (models.EventModel, error) {
+	queryString := fmt.Sprintf("SELECT * FROM events WHERE id = '%d'", eventId)
+	row, err := repository.Query(queryString)
 
 	if err != nil {
 		return models.EventModel{}, err
@@ -45,7 +46,15 @@ func (repository *EventRepository) GetEventDetail(eventId int) (models.EventMode
 	var event models.EventModel
 
 	row.Next()
-	row.Scan(&event.Id, &event.Name, &event.Age)
+	row.Scan(
+		&event.Id,
+		&event.Name,
+		&event.Description,
+		&event.Start_time,
+		&event.End_time,
+		&event.Status,
+		&event.Created_at,
+		&event.Updated_at)
 
 	return event, nil
 }

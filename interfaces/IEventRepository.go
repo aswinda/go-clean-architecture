@@ -5,5 +5,5 @@ import (
 )
 
 type IEventRepository interface {
-	GetEventDetail(eventId int) (models.EventModel, error)
+	EventDetail(eventId int) (models.EventModel, error)
 }
