@@ -1,12 +1,12 @@
 package models
 
 type EventModel struct {
-	id          int
-	name        string
-	description string
-	start_time  string
-	end_time    string
-	status      int
-	created_at  string
-	updated_at  string
+	Id          int
+	Name        string
+	Description string
+	Start_time  string
+	End_time    string
+	Status      int
+	Created_at  string
+	Updated_at  string
 }
