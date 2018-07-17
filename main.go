@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log"
 	"net/http"
 )
 
 func main() {
-	http.ListenAndServe(":8080", ChiRouter().InitRouter())
+	log.Fatal(http.ListenAndServe(":8080", ChiRouter().InitRouter()))
 }
