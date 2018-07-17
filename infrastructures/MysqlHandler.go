@@ -22,7 +22,7 @@ func (handler *MysqlHandler) Execute(statement string) {
 func (handler *MysqlHandler) Query(statement string) (interfaces.IRow, error) {
 	rows, err := handler.Conn.Query(statement)
 
-	if err == nil {
+	if err != nil {
 		fmt.Println(err)
 		return new(MysqlRow), err
 	}
