@@ -20,7 +20,7 @@ func (controller *EventController) GetEventDetailAction(response http.ResponseWr
 	// validator
 
 	detail, err := controller.GetEventDetail(eventId)
-	if err == nil {
+	if err != nil {
 		json.NewEncoder(response).Encode("Something went wrong!!")
 	}
 
