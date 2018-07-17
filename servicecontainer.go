@@ -10,7 +10,7 @@ import (
 	"github.com/aswinda/loket-backend-test/infrastructures"
 	"github.com/aswinda/loket-backend-test/repositories"
 	"github.com/aswinda/loket-backend-test/services"
-	"github.com/joho/godotenv"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 )
 
@@ -25,11 +25,21 @@ var (
 	containerOnce sync.Once
 )
 
-func (k *kernel) InjectEventController() controllers.EventController {
-	err := godotenv.Load()
+func init() {
+	viper.SetConfigFile(`config.json`)
+	err := viper.ReadInConfig()
+
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		panic(err)
 	}
+
+	if viper.GetBool(`debug`) {
+		fmt.Println("Service RUN on DEBUG mode")
+	}
+
+}
+
+func (k *kernel) InjectEventController() controllers.EventController {
 
 	mysqlUsername := viper.GetString(`database.user`)
 	mysqlPassword := viper.GetString(`database.pass`)
@@ -43,12 +53,17 @@ func (k *kernel) InjectEventController() controllers.EventController {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = mysqlConn.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	mysqlHandler := &infrastructures.MysqlHandler{}
 	mysqlHandler.Conn = mysqlConn
 
 	eventRepository := &repositories.EventRepository{mysqlHandler}
-	eventService := &services.EventService{&repositories.EventRepositoryWithCircuitBreaker{eventRepository}}
+	circuit := &repositories.EventRepositoryWithCircuitBreaker{eventRepository}
+	eventService := &services.EventService{circuit}
 	eventController := controllers.EventController{eventService}
 
 	return eventController
