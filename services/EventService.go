@@ -1,6 +1,8 @@
 package services
 
 import (
+	"encoding/json"
+
 	"github.com/aswinda/loket-backend-test/interfaces"
 )
 
@@ -9,10 +11,15 @@ type EventService struct {
 }
 
 func (service *EventService) GetEventDetail(eventId int) (string, error) {
-	result, err := service.GetEventDetail(eventId)
+	result, err := service.EventDetail(1)
 	if err != nil {
 		// handle error
 	}
 
-	return result, nil
+	resp, err := json.Marshal(result)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(resp), nil
 }
