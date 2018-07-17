@@ -8,7 +8,7 @@
     },
     "database": {
         "host": "localhost",
-        "port": "8082",
+        "port": "3036",
         "user": "loket",
         "pass": "loket",
         "name": "loket"
