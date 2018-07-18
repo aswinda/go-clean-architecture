@@ -16,6 +16,7 @@ import (
 
 type IServiceContainer interface {
 	InjectEventController() controllers.EventController
+	InjectLocationController() controllers.LocationController
 }
 
 type kernel struct{}
@@ -73,7 +74,7 @@ func (k *kernel) InjectEventController() controllers.EventController {
 	return eventController
 }
 
-func (k *kernel) InjectLocationController() controllers.EventController {
+func (k *kernel) InjectLocationController() controllers.LocationController {
 
 	mysqlConn, err := sql.Open("mysql", getConnectionStringMysql())
 	if err != nil {
