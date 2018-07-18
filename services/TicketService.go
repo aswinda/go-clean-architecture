@@ -14,3 +14,9 @@ func (service *TicketService) CreateTicket(body models.TicketModel) (models.Tick
 
 	return result, err
 }
+
+func (service *TicketService) GetTicketDetail(ticketId int) (models.TicketModel, error) {
+	result, err := service.TicketDetail(ticketId)
+
+	return result, err
+}

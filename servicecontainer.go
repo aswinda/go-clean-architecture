@@ -136,7 +136,9 @@ func (k *kernel) InjectTransactionController() controllers.TransactionController
 
 	transactionRepository := &repositories.TransactionRepository{mysqlHandler}
 	circuit := &repositories.TransactionRepositoryWithCircuitBreaker{transactionRepository}
-	transactionService := &services.TransactionService{circuit}
+	ticketRepository := &repositories.TicketRepository{mysqlHandler}
+	circuit2 := &repositories.TicketRepositoryWithCircuitBreaker{ticketRepository}
+	transactionService := &services.TransactionService{circuit, circuit2}
 	transactionController := controllers.TransactionController{transactionService}
 
 	return transactionController

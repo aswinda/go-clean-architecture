@@ -7,4 +7,5 @@ import (
 type ITransactionRepository interface {
 	TransactionDetail(transactionId int) (models.TransactionModel, error)
 	StoreTransaction(body models.TransactionModel) (models.TransactionModel, error)
+	StoreTransactionDetail(body models.TransactionDetailModel) (models.TransactionDetailModel, error)
 }

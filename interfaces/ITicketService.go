@@ -6,4 +6,5 @@ import (
 
 type ITicketService interface {
 	CreateTicket(body models.TicketModel) (models.TicketModel, error)
+	GetTicketDetail(ticketId int) (models.TicketModel, error)
 }

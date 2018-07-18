@@ -36,6 +36,7 @@ func (controller *TransactionController) GetTransactionDetailAction(w http.Respo
 	detail, err := controller.GetTransactionDetail(transactionId)
 	if err != nil {
 		respond.With(w, r, http.StatusBadRequest, ApiResponse(http.StatusBadRequest, fmt.Sprintf("%s", err), map[string]interface{}{}))
+		return
 	}
 
 	var inInterface map[string]interface{}
@@ -45,9 +46,9 @@ func (controller *TransactionController) GetTransactionDetailAction(w http.Respo
 	respond.With(w, r, http.StatusBadRequest, ApiResponse(http.StatusOK, "", inInterface))
 }
 
-func (controller *TransactionController) CreateTransactionAction(w http.ResponseWriter, r *http.Request) {
+func (controller *TransactionController) PurchaseTransactionAction(w http.ResponseWriter, r *http.Request) {
 	dec := json.NewDecoder(r.Body)
-	var req models.TransactionModel
+	var req models.TransactionPurchase
 	for {
 		if err := dec.Decode(&req); err == io.EOF {
 			break
@@ -69,9 +70,10 @@ func (controller *TransactionController) CreateTransactionAction(w http.Response
 		return
 	}
 
-	result, err := controller.CreateTransaction(req)
+	result, err := controller.PurchaseTransaction(req)
 	if err != nil {
 		respond.With(w, r, http.StatusBadRequest, ApiResponse(http.StatusBadRequest, fmt.Sprintf("%s", err), map[string]interface{}{}))
+		return
 	}
 
 	var inInterface map[string]interface{}
