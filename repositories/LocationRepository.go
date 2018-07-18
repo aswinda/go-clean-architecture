@@ -55,11 +55,11 @@ func (repository *LocationRepository) StoreLocation(body models.LocationModel) (
 
 	row.Next()
 	row.Scan(
-		&location.Id,
+		&location.ID,
 		&location.Name,
 		&location.Status,
-		&location.Created_at,
-		&location.Updated_at)
+		&location.CreatedAt,
+		&location.UpdatedAt)
 
 	return location, nil
 }

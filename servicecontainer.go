@@ -17,6 +17,7 @@ import (
 type IServiceContainer interface {
 	InjectEventController() controllers.EventController
 	InjectLocationController() controllers.LocationController
+	InjectTicketController() controllers.TicketController
 }
 
 type kernel struct{}
@@ -94,6 +95,28 @@ func (k *kernel) InjectLocationController() controllers.LocationController {
 	locationController := controllers.LocationController{locationService}
 
 	return locationController
+}
+
+func (k *kernel) InjectTicketController() controllers.TicketController {
+
+	mysqlConn, err := sql.Open("mysql", getConnectionStringMysql())
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = mysqlConn.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mysqlHandler := &infrastructures.MysqlHandler{}
+	mysqlHandler.Conn = mysqlConn
+
+	ticketRepository := &repositories.TicketRepository{mysqlHandler}
+	circuit := &repositories.TicketRepositoryWithCircuitBreaker{ticketRepository}
+	ticketService := &services.TicketService{circuit}
+	ticketController := controllers.TicketController{ticketService}
+
+	return ticketController
 }
 
 func ServiceContainer() IServiceContainer {
