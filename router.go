@@ -26,6 +26,9 @@ func (router *router) InitRouter() *chi.Mux {
 	ticketController := ServiceContainer().InjectTicketController()
 	r.Post("/ticket/create", ticketController.CreateTicketAction)
 
+	transactionController := ServiceContainer().InjectTransactionController()
+	r.Post("/transaction/purchase", transactionController.CreateTransactionAction)
+
 	return r
 }
 
