@@ -39,8 +39,7 @@ func init() {
 
 }
 
-func (k *kernel) InjectEventController() controllers.EventController {
-
+func getConnectionStringMysql() string {
 	mysqlUsername := viper.GetString(`database.user`)
 	mysqlPassword := viper.GetString(`database.pass`)
 	mysqlDefaultDb := viper.GetString(`database.name`)
@@ -49,7 +48,12 @@ func (k *kernel) InjectEventController() controllers.EventController {
 
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", mysqlUsername, mysqlPassword, mysqlHost, mysqlPort, mysqlDefaultDb)
 
-	mysqlConn, err := sql.Open("mysql", connectionString)
+	return connectionString
+}
+
+func (k *kernel) InjectEventController() controllers.EventController {
+
+	mysqlConn, err := sql.Open("mysql", getConnectionStringMysql())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -67,6 +71,28 @@ func (k *kernel) InjectEventController() controllers.EventController {
 	eventController := controllers.EventController{eventService}
 
 	return eventController
+}
+
+func (k *kernel) InjectLocationController() controllers.EventController {
+
+	mysqlConn, err := sql.Open("mysql", getConnectionStringMysql())
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = mysqlConn.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mysqlHandler := &infrastructures.MysqlHandler{}
+	mysqlHandler.Conn = mysqlConn
+
+	locationRepository := &repositories.LocationRepository{mysqlHandler}
+	circuit := &repositories.LocationRepositoryWithCircuitBreaker{locationRepository}
+	locationService := &services.LocationService{circuit}
+	locationController := controllers.LocationController{locationService}
+
+	return locationController
 }
 
 func ServiceContainer() IServiceContainer {

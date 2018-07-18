@@ -20,6 +20,8 @@ func (router *router) InitRouter() *chi.Mux {
 	r.Get("/event/get_info", eventController.GetEventDetailAction)
 	r.Post("/event/create", eventController.CreateEventAction)
 
+	locationController := ServiceContainer().InjectLocationController()
+
 	return r
 }
 
