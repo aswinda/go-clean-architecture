@@ -21,6 +21,7 @@ func (router *router) InitRouter() *chi.Mux {
 	r.Post("/event/create", eventController.CreateEventAction)
 
 	locationController := ServiceContainer().InjectLocationController()
+	r.Post("/location/create", locationController.CreateLocationAction)
 
 	return r
 }
