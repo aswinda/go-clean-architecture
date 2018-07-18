@@ -17,7 +17,7 @@ func (router *router) InitRouter() *chi.Mux {
 	eventController := ServiceContainer().InjectEventController()
 
 	r := chi.NewRouter()
-	r.HandleFunc("/event/get_info", eventController.GetEventDetailAction)
+	r.Get("/event/get_info", eventController.GetEventDetailAction)
 
 	return r
 }
