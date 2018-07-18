@@ -1,5 +1,9 @@
 package interfaces
 
+import (
+	"github.com/aswinda/loket-backend-test/models"
+)
+
 type IEventService interface {
-	GetEventDetail(eventId int) (string, error)
+	GetEventDetail(eventId int) (models.EventModel, error)
 }
