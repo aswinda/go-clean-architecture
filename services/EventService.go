@@ -14,3 +14,9 @@ func (service *EventService) GetEventDetail(eventId int) (models.EventModel, err
 
 	return result, err
 }
+
+func (service *EventService) CreateEvent(body models.EventModel) (models.EventModel, error) {
+	result, err := service.StoreEvent(body)
+
+	return result, err
+}
