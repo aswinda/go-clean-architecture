@@ -18,6 +18,7 @@ func (router *router) InitRouter() *chi.Mux {
 
 	r := chi.NewRouter()
 	r.Get("/event/get_info", eventController.GetEventDetailAction)
+	r.Post("/event/create", eventController.CreateEventAction)
 
 	return r
 }
