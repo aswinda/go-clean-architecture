@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "39fe176b-a8b3-4c05-94f7-38cf2f0e5048",
+		"name": "Loket Backend Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Event List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/event/get_info?event_id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"get_info"
+					],
+					"query": [
+						{
+							"key": "event_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transaction Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/transaction/get_info?transaction_id=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transaction",
+						"get_info"
+					],
+					"query": [
+						{
+							"key": "transaction_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Event",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Event Lagi\",\n\t\"description\" : \"Deskripsi\",\n\t\"location_id\" : 1,\n\t\"start_time\" : \"2018-01-01\",\n\t\"end_time\" : \"2018-02-01\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/event/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"event",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Location",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Jawa Tengah\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/location/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"location",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"event_id\" : 1,\n\t\"ticket_type_id\" : 1,\n\t\"quota\" : 100,\n\t\"price\" : 100000\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/ticket/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ticket",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transaction Purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"customer_id\" : 1,\n\t\"event_id\" : 1,\n\t\"ticket_id\" : [1,3],\n\t\"amount\" : [1,2]\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/transaction/purchase",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transaction",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
