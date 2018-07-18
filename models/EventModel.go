@@ -1,12 +1,12 @@
 package models
 
 type EventModel struct {
-	Id          int
-	Name        string
-	Description string
-	Start_time  string
-	End_time    string
-	Status      int
-	Created_at  string
-	Updated_at  string
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Start_time  string `json:"start_time"`
+	End_time    string `json:"end_time"`
+	Status      int    `json:"status"`
+	Created_at  string `json:"created_at"`
+	Updated_at  string `json:"updated_at"`
 }
