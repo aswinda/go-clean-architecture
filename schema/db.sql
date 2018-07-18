@@ -59,7 +59,7 @@ CREATE TABLE `customers` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,6 +68,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,'Aswin',1,NULL,NULL);
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,13 +83,14 @@ CREATE TABLE `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `description` varchar(500) DEFAULT NULL,
+  `location_id` int(11) DEFAULT NULL,
   `start_time` timestamp NULL DEFAULT NULL,
   `end_time` timestamp NULL DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +99,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` VALUES (1,'Yuk Baca!!','Event membaca buku',NULL,'2018-07-16 18:51:13','2018-07-16 18:51:13',1,'2018-07-16 18:51:13','2018-07-16 18:51:13'),(7,'Event Baru','Deskripsi',NULL,'2018-01-01 00:00:00','2018-02-01 00:00:00',1,NULL,NULL),(8,'Event Baru','Deskripsi',NULL,'2018-01-01 00:00:00','2018-02-01 00:00:00',1,NULL,NULL),(9,'Event Baru','Deskripsi',NULL,'2018-01-01 00:00:00','2018-02-01 00:00:00',1,NULL,NULL),(10,'1233','Deskripsi',NULL,'2018-01-01 00:00:00','2018-02-01 00:00:00',1,NULL,NULL),(11,'Event Lagi','Deskripsi',1,'2018-01-01 00:00:00','2018-02-01 00:00:00',1,NULL,NULL);
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +117,7 @@ CREATE TABLE `locations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,62 +126,8 @@ CREATE TABLE `locations` (
 
 LOCK TABLES `locations` WRITE;
 /*!40000 ALTER TABLE `locations` DISABLE KEYS */;
+INSERT INTO `locations` VALUES (1,'Jawa Tengah',1,NULL,NULL),(2,'Jawa Tengah',1,NULL,NULL);
 /*!40000 ALTER TABLE `locations` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `orders`
---
-
-DROP TABLE IF EXISTS `orders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) DEFAULT NULL,
-  `event_id` int(11) DEFAULT NULL,
-  `total_price` int(11) DEFAULT NULL,
-  `status` int(1) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `orders`
---
-
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `orders__details`
---
-
-DROP TABLE IF EXISTS `orders__details`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `orders__details` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) DEFAULT NULL,
-  `ticket_id` int(11) DEFAULT NULL,
-  `status` int(1) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `orders__details`
---
-
-LOCK TABLES `orders__details` WRITE;
-/*!40000 ALTER TABLE `orders__details` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders__details` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -226,7 +175,7 @@ CREATE TABLE `tickets` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +184,68 @@ CREATE TABLE `tickets` (
 
 LOCK TABLES `tickets` WRITE;
 /*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
+INSERT INTO `tickets` VALUES (1,1,1,5,10000,1,NULL,NULL),(2,2,2,10,100000,1,NULL,NULL),(3,1,2,10,150000,1,NULL,NULL);
 /*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transactions`
+--
+
+DROP TABLE IF EXISTS `transactions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer_id` int(11) DEFAULT NULL,
+  `event_id` int(11) DEFAULT NULL,
+  `total_amount` int(11) DEFAULT NULL,
+  `total_price` int(11) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transactions`
+--
+
+LOCK TABLES `transactions` WRITE;
+/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+INSERT INTO `transactions` VALUES (1,1,1,NULL,310000,1,NULL,NULL),(2,1,1,3,310000,1,NULL,NULL),(3,1,1,3,310000,1,NULL,NULL),(4,1,1,3,310000,1,NULL,NULL),(5,1,1,3,310000,1,NULL,NULL),(6,1,1,3,310000,1,NULL,NULL);
+/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transactions__details`
+--
+
+DROP TABLE IF EXISTS `transactions__details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transactions__details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) DEFAULT NULL,
+  `ticket_id` int(11) DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
+  `total_price` int(11) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transactions__details`
+--
+
+LOCK TABLES `transactions__details` WRITE;
+/*!40000 ALTER TABLE `transactions__details` DISABLE KEYS */;
+INSERT INTO `transactions__details` VALUES (1,0,1,1,10000,1,NULL,NULL),(2,0,3,2,150000,1,NULL,NULL),(3,0,1,1,10000,1,NULL,NULL),(4,0,3,2,150000,1,NULL,NULL),(5,0,1,1,10000,1,NULL,NULL),(6,0,3,2,150000,1,NULL,NULL),(7,0,1,1,10000,1,NULL,NULL),(8,0,3,2,150000,1,NULL,NULL),(9,6,1,1,10000,1,NULL,NULL),(10,6,3,2,150000,1,NULL,NULL);
+/*!40000 ALTER TABLE `transactions__details` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -247,4 +257,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-17  1:09:34
+-- Dump completed on 2018-07-19  6:45:46
