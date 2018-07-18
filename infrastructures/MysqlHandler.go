@@ -15,8 +15,16 @@ type MysqlRow struct {
 	Rows *sql.Rows
 }
 
-func (handler *MysqlHandler) Execute(statement string) {
-	handler.Conn.Exec(statement)
+func (handler *MysqlHandler) Execute(statement string) (int64, error) {
+	row, err := handler.Conn.Exec(statement)
+	if err != nil {
+		fmt.Println(err)
+		return 0, err
+	}
+
+	id, err := row.LastInsertId()
+
+	return id, err
 }
 
 func (handler *MysqlHandler) Query(statement string) (interfaces.IRow, error) {
