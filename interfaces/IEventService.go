@@ -6,4 +6,5 @@ import (
 
 type IEventService interface {
 	GetEventDetail(eventId int) (models.EventModel, error)
+	CreateEvent(body models.EventModel) (models.EventModel, error)
 }

@@ -6,4 +6,5 @@ import (
 
 type IEventRepository interface {
 	EventDetail(eventId int) (models.EventModel, error)
+	StoreEvent(body models.EventModel) (models.EventModel, error)
 }
