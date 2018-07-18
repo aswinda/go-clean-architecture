@@ -1,7 +1,7 @@
 package interfaces
 
 type IDbHandler interface {
-	Execute(statement string)
+	Execute(statement string) (int64, error)
 	Query(statement string) (IRow, error)
 }
 
