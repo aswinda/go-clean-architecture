@@ -13,28 +13,8 @@ import (
 	"gopkg.in/matryer/respond.v1"
 )
 
-var validate *validator.Validate
-
 type LocationController struct {
 	interfaces.ILocationService
-}
-
-func ApiResponse(code int, messages string, data map[string]interface{}) map[string]interface{} {
-	var status string
-	if code == 200 {
-		status = "ok"
-	} else {
-		status = "error"
-	}
-
-	result := map[string]interface{}{
-		"status":   status,
-		"code":     code,
-		"messages": messages,
-		"data":     data,
-	}
-
-	return result
 }
 
 func (controller *LocationController) CreateLocationAction(w http.ResponseWriter, r *http.Request) {
