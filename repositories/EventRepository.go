@@ -50,6 +50,7 @@ func (repository *EventRepository) EventDetail(eventId int) (models.EventModel, 
 		&event.ID,
 		&event.Name,
 		&event.Description,
+		&event.LocationID,
 		&event.StartTime,
 		&event.EndTime,
 		&event.Status,
@@ -80,7 +81,7 @@ func (repository *EventRepositoryWithCircuitBreaker) StoreEvent(body models.Even
 
 func (repository *EventRepository) StoreEvent(body models.EventModel) (models.EventModel, error) {
 
-	queryString := fmt.Sprintf("insert into events ( name, description, start_time, end_time, status) values ('%s', '%s', '%s', '%s', '%d')", body.Name, body.Description, body.StartTime, body.EndTime, 1)
+	queryString := fmt.Sprintf("insert into events ( name, description, location_id, start_time, end_time, status) values ('%s', '%s', '%d', '%s', '%s', '%d')", body.Name, body.Description, body.LocationID, body.StartTime, body.EndTime, 1)
 	id, err := repository.Execute(queryString)
 
 	if err != nil {
@@ -101,6 +102,7 @@ func (repository *EventRepository) StoreEvent(body models.EventModel) (models.Ev
 		&event.ID,
 		&event.Name,
 		&event.Description,
+		&event.LocationID,
 		&event.StartTime,
 		&event.EndTime,
 		&event.Status,
