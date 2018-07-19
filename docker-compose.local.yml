@@ -1,0 +1,29 @@
+version: "3.2"
+
+services:
+
+  redis:
+    image: redis:3.2-alpine
+    volumes:
+      -  ./data/redis:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - loket
+
+  mysql:
+    image: mysql:5.6
+    volumes:
+        - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=loket
+      - MYSQL_DATABASE=loket
+      - MYSQL_USER=loket
+      - MYSQL_PASSWORD=loket
+    ports:
+      - "3036:3306"
+    networks:
+      - loket
+
+networks:
+  loket:

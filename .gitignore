@@ -11,10 +11,6 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-data/mysql/
-
-data/redis/
-
-debug
-
+data/*
 loket-backend-test
+debug
