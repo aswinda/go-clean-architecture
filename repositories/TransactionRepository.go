@@ -50,12 +50,59 @@ func (repository *TransactionRepository) TransactionDetail(transactionId int) (m
 		&transaction.ID,
 		&transaction.CustomerID,
 		&transaction.EventID,
+		&transaction.TotalAmount,
 		&transaction.TotalPrice,
 		&transaction.Status,
 		&transaction.CreatedAt,
 		&transaction.UpdatedAt)
 
 	return transaction, nil
+}
+
+func (repository *TransactionRepositoryWithCircuitBreaker) TransactionDetailList(transactionId int) ([]*models.TransactionDetailModel, error) {
+	output := make(chan []*models.TransactionDetailModel, 1)
+	hystrix.ConfigureCommand("get_transaction_list", hystrix.CommandConfig{Timeout: 1000})
+	errors := hystrix.Go("get_transaction_list", func() error {
+		transaction, _ := repository.TransactionRepository.TransactionDetailList(transactionId)
+
+		output <- transaction
+		return nil
+	}, nil)
+
+	select {
+	case out := <-output:
+		return out, nil
+	case err := <-errors:
+		println(err)
+		return nil, err
+	}
+}
+
+func (repository *TransactionRepository) TransactionDetailList(transactionId int) ([]*models.TransactionDetailModel, error) {
+	queryString := fmt.Sprintf("SELECT * FROM transactions__details WHERE transaction_id = '%d'", transactionId)
+	rows, err := repository.Query(queryString)
+
+	if err != nil {
+		return nil, err
+	}
+	result := make([]*models.TransactionDetailModel, 0)
+	for rows.Next() {
+		transaction := new(models.TransactionDetailModel)
+
+		rows.Scan(
+			&transaction.ID,
+			&transaction.TransactionID,
+			&transaction.TicketID,
+			&transaction.Amount,
+			&transaction.TotalPrice,
+			&transaction.Status,
+			&transaction.CreatedAt,
+			&transaction.UpdatedAt)
+
+		result = append(result, transaction)
+	}
+
+	return result, nil
 }
 
 func (repository *TransactionRepositoryWithCircuitBreaker) StoreTransaction(body models.TransactionModel) (models.TransactionModel, error) {

@@ -11,12 +11,38 @@ import (
 type TransactionService struct {
 	interfaces.ITransactionRepository
 	interfaces.ITicketRepository
+	interfaces.IEventRepository
 }
 
-func (service *TransactionService) GetTransactionDetail(transactionId int) (models.TransactionModel, error) {
-	result, err := service.TransactionDetail(transactionId)
+func (service *TransactionService) GetTransactionDetail(transactionId int) (models.TransactionInfoViewModel, error) {
+	transaction, _ := service.TransactionDetail(transactionId)
+	event, _ := service.EventDetail(transaction.EventID)
 
-	return result, err
+	details := []*models.TransactionDetailViewModel{} // hardcode 10 details
+
+	transactionDetailList, _ := service.TransactionDetailList(transactionId)
+	for _, element := range transactionDetailList {
+
+		ticketModel, _ := service.TicketDetail(element.TicketID)
+
+		detailModel := &models.TransactionDetailViewModel{
+			ID:            element.ID,
+			TransactionID: element.TransactionID,
+			Ticket:        models.TicketViewModel{ID: ticketModel.ID, TicketTypeID: ticketModel.TicketTypeID, Quota: ticketModel.Quota, Price: ticketModel.Price},
+			Amount:        element.Amount,
+			TotalPrice:    element.TotalPrice}
+
+		details = append(details, detailModel)
+	}
+
+	transactionInfo := models.TransactionInfoViewModel{
+		ID:          transaction.ID,
+		CustomerID:  transaction.CustomerID,
+		EventName:   event.Name,
+		TotalAmount: transaction.TotalAmount,
+		TotalPrice:  transaction.TotalPrice,
+		Details:     details}
+	return transactionInfo, nil
 }
 
 func (service *TransactionService) CreateTransaction(body models.TransactionModel) (models.TransactionModel, error) {

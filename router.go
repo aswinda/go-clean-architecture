@@ -28,6 +28,7 @@ func (router *router) InitRouter() *chi.Mux {
 
 	transactionController := ServiceContainer().InjectTransactionController()
 	r.Post("/transaction/purchase", transactionController.PurchaseTransactionAction)
+	r.Get("/transaction/get_info", transactionController.GetTransactionDetailAction)
 
 	return r
 }

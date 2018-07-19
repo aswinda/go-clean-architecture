@@ -5,7 +5,7 @@ import (
 )
 
 type ITransactionService interface {
-	GetTransactionDetail(transactionId int) (models.TransactionModel, error)
+	GetTransactionDetail(transactionId int) (models.TransactionInfoViewModel, error)
 	CreateTransaction(body models.TransactionModel) (models.TransactionModel, error)
 	PurchaseTransaction(body models.TransactionPurchase) (models.TransactionModel, error)
 }
