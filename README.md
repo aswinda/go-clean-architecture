@@ -35,3 +35,15 @@ you can test the api with postman, postman file included in this project
 
 Trello is used for project management
 https://trello.com/b/6HCM5X84/loket-backend-test
+
+This project use Uncle Bob Clean Architecture you can read it here
+https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html
+Inspired by : 
+http://manuel.kiessling.net/2012/09/28/applying-the-clean-architecture-to-go-applications/
+
+# Feature
+- Dependency Injection
+- Circuit Breaker
+
+for the detailed explanation you can read link above
+
